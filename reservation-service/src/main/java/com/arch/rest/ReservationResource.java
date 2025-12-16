@@ -1,4 +1,4 @@
-package com.arch.reservation.rest;
+package com.arch.rest;
 
 import java.time.LocalDate;
 import java.util.Collection;
