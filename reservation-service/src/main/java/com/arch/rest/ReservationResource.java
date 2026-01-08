@@ -24,6 +24,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("/reservations")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,11 +33,14 @@ public class ReservationResource {
     private final ReservationsRepository reservationsRepository;
     private final GraphQLInventoryClient inventoryClient;
     private final RentalClient rentalClient;
+    private final SecurityContext securityContext;
 
-    public ReservationResource(ReservationsRepository reservationsRepository, @GraphQLClient("inventory") GraphQLInventoryClient inventoryClient, @RestClient RentalClient rentalClient) {
+    public ReservationResource(ReservationsRepository reservationsRepository, @GraphQLClient("inventory") GraphQLInventoryClient inventoryClient, @RestClient RentalClient rentalClient,
+        SecurityContext securityContext) {
         this.reservationsRepository = reservationsRepository;
         this.inventoryClient = inventoryClient;
         this.rentalClient = rentalClient;
+      this.securityContext = securityContext;
     }
 
     @GET
@@ -60,11 +64,19 @@ public class ReservationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Reservation make(Reservation reservation) {
         Reservation result = reservationsRepository.save(reservation);
-        String userId = "X";
+        String userId = securityContext.getUserPrincipal() != null ? securityContext.getUserPrincipal().getName() : "anonymous";
         if (reservation.startDay.equals(LocalDate.now())) {
             Rental rental = rentalClient.start(userId, result.id);
             Log.info("Successfully started rental " + rental);
         }
         return result;
+    }
+
+    @GET
+    @Path("/all")
+    public Collection<Reservation> allReservations() {
+        String userId = securityContext.getUserPrincipal() != null ? securityContext.getUserPrincipal().getName() : null;
+        return reservationsRepository.findAll().stream().filter(reservation -> userId == null
+        || reservation.userId.equalsIgnoreCase(userId)).toList();
     }
 }

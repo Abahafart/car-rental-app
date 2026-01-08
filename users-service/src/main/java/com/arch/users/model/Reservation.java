@@ -1,4 +1,4 @@
-package com.arch.reservation;
+package com.arch.users.model;
 
 import java.time.LocalDate;
 
