@@ -61,7 +61,7 @@ public class ReservationsResource {
   @GET
   @Produces(MediaType.TEXT_HTML)
   @Path("/available")
-  public TemplateInstance available(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) {
+  public TemplateInstance getAvailableCars(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate) {
     Collection<Car> availableCars = reservationsClient.availability(startDate, endDate);
     return Templates.availablecars(availableCars, startDate, endDate);
   }
@@ -69,13 +69,14 @@ public class ReservationsResource {
   @POST
   @Produces(MediaType.TEXT_HTML)
   @Path("/reserve")
-  public RestResponse<TemplateInstance> create(@RestForm LocalDate startDate, @RestForm LocalDate endDate, @RestForm Long carId) {
+  public RestResponse<TemplateInstance> create(@RestForm LocalDate startDate,
+      @RestForm LocalDate endDate, @RestForm Long carId) {
     Reservation reservation = new Reservation();
     reservation.startDay = startDate;
     reservation.endDay = endDate;
     reservation.carId = carId;
     reservationsClient.make(reservation);
     return RestResponse.ResponseBuilder.ok(getReservations())
-        .header("HX-Trigger-After-Swap", "Update-available-cars-list").build();
+        .header("HX-Trigger-After-Swap", "update-available-cars-list").build();
   }
 }

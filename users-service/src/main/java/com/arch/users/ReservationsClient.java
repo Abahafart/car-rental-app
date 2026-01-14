@@ -21,14 +21,13 @@ public interface ReservationsClient {
 
     @GET
     @Path("/all")
-    public Collection<Reservation> allReservations();
+    Collection<Reservation> allReservations();
 
     @POST
-    @Path("/make")
-    public Reservation make(Reservation reservation);
+    Reservation make(Reservation reservation);
 
     @GET
     @Path("/availability")
-    public Collection<Car> availability(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate);
+    Collection<Car> availability(@RestQuery LocalDate startDate, @RestQuery LocalDate endDate);
 
 }
