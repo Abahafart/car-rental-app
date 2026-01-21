@@ -7,31 +7,36 @@ import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Query;
 
-import com.arch.inventory.database.CarInventory;
 import com.arch.inventory.model.Car;
+import com.arch.inventory.repository.CarRepository;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @GraphQLApi
 public class GraphQLInventoryService {
 
     @Inject
-    CarInventory inventory;
+    CarRepository carRepository;
+
     @Query
     public List<Car> cars() {
-        return inventory.getCars();
+        return carRepository.listAll();
     }
+
     @Mutation
+    @Transactional
     public Car register(Car car) {
-        car.id = CarInventory.ids.incrementAndGet();
-        inventory.getCars().add(car);
+        carRepository.persist(car);
         return car;
     }
+
     @Mutation
+    @Transactional
     public boolean remove(String licensePlateNumber) {
-        List<Car> cars = inventory.getCars();
+        List<Car> cars = carRepository.listAll();
         Optional<Car> toBeRemoved = cars.stream()
-                .filter(car -> car.licensePlateNumber
+                .filter(car -> car.getLicensePlateNumber()
                         .equals(licensePlateNumber))
                 .findAny();
         if(toBeRemoved.isPresent()) {
