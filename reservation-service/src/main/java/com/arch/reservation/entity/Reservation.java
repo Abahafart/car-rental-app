@@ -1,4 +1,4 @@
-package com.arch.reservation;
+package com.arch.reservation.entity;
 
 import java.time.LocalDate;
 

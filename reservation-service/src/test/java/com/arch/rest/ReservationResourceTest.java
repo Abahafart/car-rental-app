@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 
 import com.arch.inventory.Car;
 import com.arch.inventory.GraphQLInventoryClient;
-import com.arch.reservation.Reservation;
+import com.arch.reservation.entity.Reservation;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.common.http.TestHTTPResource;
