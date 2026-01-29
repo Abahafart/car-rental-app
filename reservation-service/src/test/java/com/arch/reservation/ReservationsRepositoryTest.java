@@ -8,24 +8,31 @@ import org.junit.jupiter.api.Test;
 
 import com.arch.reservation.entity.Reservation;
 
+import io.quarkus.test.hibernate.reactive.panache.TransactionalUniAsserter;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.transaction.Transactional;
+import io.quarkus.test.vertx.RunOnVertxContext;
 
 @QuarkusTest
 class ReservationsRepositoryTest {
 
   @Test
-  @Transactional
-  public void testCreateReservation() {
+  @RunOnVertxContext
+  public void testCreateReservation(TransactionalUniAsserter asserter) {
     Reservation reservation = new Reservation();
     reservation.startDay = LocalDate.now().plus(5, ChronoUnit.DAYS);
     reservation.endDay = LocalDate.now().plusDays(12L);
     reservation.carId = 384L;
-    reservation.persist();
-    Assertions.assertNotNull(reservation.id);
-    Assertions.assertEquals(1, Reservation.count());
-    Reservation persistedReservation = Reservation.findById(reservation.id);
-    Assertions.assertNotNull(persistedReservation);
-    Assertions.assertEquals(reservation.id, persistedReservation.id);
+
+    asserter.<Reservation>assertThat(reservation::persist, r -> {
+      Assertions.assertNotNull(r.id);
+      asserter.putData("resservation.id", r.id);
+    });
+
+    asserter.assertEquals(Reservation::count, 1L);
+    asserter.assertThat(() -> Reservation.<Reservation>findById(asserter.getData("reservation.id")),
+        persistedReservation -> {
+          Assertions.assertNotNull(persistedReservation);
+          Assertions.assertEquals(reservation.carId, persistedReservation.carId);
+        });
   }
 }
