@@ -8,7 +8,7 @@ import io.smallrye.graphql.client.typesafe.api.GraphQLClientApi;
 import io.smallrye.mutiny.Uni;
 
 @GraphQLClientApi(configKey = "inventory")
-public interface GraphQLInventoryClient {
+public interface GraphQLInventoryClient extends InventoryClient {
     @Query("cars")
     Uni<List<Car>> allCars();
 }

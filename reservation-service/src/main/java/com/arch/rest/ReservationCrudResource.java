@@ -1,6 +1,6 @@
 package com.arch.rest;
 
-import com.arch.reservation.entity.Reservation;
+import com.arch.entity.Reservation;
 
 import io.quarkus.hibernate.reactive.rest.data.panache.PanacheEntityResource;
 import io.quarkus.rest.data.panache.ResourceProperties;

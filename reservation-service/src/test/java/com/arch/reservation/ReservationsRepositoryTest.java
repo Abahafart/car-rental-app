@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.arch.reservation.entity.Reservation;
+import com.arch.entity.Reservation;
 
 import io.quarkus.test.hibernate.reactive.panache.TransactionalUniAsserter;
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,7 +25,7 @@ class ReservationsRepositoryTest {
 
     asserter.<Reservation>assertThat(reservation::persist, r -> {
       Assertions.assertNotNull(r.id);
-      asserter.putData("resservation.id", r.id);
+      asserter.putData("reservation.id", r.id);
     });
 
     asserter.assertEquals(Reservation::count, 1L);

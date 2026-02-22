@@ -1,6 +1,4 @@
-package com.arch;
-
-import com.arch.rest.ReservationResourceTest;
+package com.arch.reservation;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

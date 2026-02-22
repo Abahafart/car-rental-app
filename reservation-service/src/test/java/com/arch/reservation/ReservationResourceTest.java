@@ -1,4 +1,4 @@
-package com.arch.rest;
+package com.arch.reservation;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -13,7 +13,8 @@ import org.mockito.Mockito;
 
 import com.arch.inventory.Car;
 import com.arch.inventory.GraphQLInventoryClient;
-import com.arch.reservation.entity.Reservation;
+import com.arch.entity.Reservation;
+import com.arch.rest.ReservationResource;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.common.http.TestHTTPResource;

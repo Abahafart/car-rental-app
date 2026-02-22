@@ -1,6 +1,6 @@
-package com.arch.reservation.billing;
+package com.arch.billing;
 
-import com.arch.reservation.entity.Reservation;
+import com.arch.entity.Reservation;
 
 public class Invoice {
 

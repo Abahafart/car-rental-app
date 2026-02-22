@@ -14,9 +14,10 @@ import org.jboss.resteasy.reactive.RestQuery;
 
 import com.arch.inventory.Car;
 import com.arch.inventory.GraphQLInventoryClient;
+import com.arch.inventory.InventoryClient;
 import com.arch.rental.RentalClient;
-import com.arch.reservation.billing.Invoice;
-import com.arch.reservation.entity.Reservation;
+import com.arch.billing.Invoice;
+import com.arch.entity.Reservation;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.logging.Log;
@@ -37,7 +38,7 @@ import jakarta.ws.rs.core.SecurityContext;
 public class ReservationResource {
 
     public static final double STANDARD_RATE_PER_DAY = 19.99;
-    private final GraphQLInventoryClient inventoryClient;
+    private final InventoryClient inventoryClient;
     private final RentalClient rentalClient;
     @Inject
     SecurityContext securityContext;
